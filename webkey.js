@@ -9,9 +9,7 @@ class SoundKey {
     // create web audio api context
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.state = {
-      keys  : [],
       octave: 4,
-      head  : 0,  // A
       frequencyMap: {},
     };
   }
@@ -84,12 +82,12 @@ class Webkey {
       {
         keys  : 'azsxcfvgbnjmk,l./:\\]'.split(''),
         octave: 4,
-        head  : -1
+        head  : -1  // 'a' is code B#(A-)
       },
       {
         keys  : 'q2w3er5t6y7ui9o0p@^['.split(''),
         octave: 5,
-        head  : 3
+        head  : 3  // 'q' is code C
       },
     ];
     this.soundKey = new SoundKey();
