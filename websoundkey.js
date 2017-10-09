@@ -9,7 +9,7 @@ class SoundKey {
     // create web audio api context
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.gainNode = this.audioCtx.createGain();
-    // this.gainNode.value = 100;
+    this.gainNode.gain.value = 0.5;
     this.gainNode.connect(this.audioCtx.destination);
     this.state = {
       volume: 100,
@@ -65,18 +65,24 @@ class SoundKey {
     }
   }
 
-  upOctave() {
-    this.state.octave += 1;
-    if (this.state.octave > 8) {
-      this.state.octave = 8;
+  setOctave(octave, relative = false) {
+    if (!octave) {
+      return
     }
-  }
+    if (relative) {
+      this.state.octave += octave;
+    }
+    else {
+      this.state.octave = octave;
+    }
 
-  downOctave() {
-    this.state.octave -= 1;
     if (this.state.octave < 1) {
       this.state.octave = 1;
     }
+    else if (this.state.octave > 8) {
+      this.state.octave = 8;
+    }
+    console.log(this.state.octave);
   }
 
   setVolume(volume = 1, relative = false) {
@@ -93,7 +99,7 @@ class SoundKey {
     else if (this.gainNode.gain.value > 1) {
       this.gainNode.gain.value = 1;
     }
-    console.log(this.gainNode.gain)
+    console.log(this.gainNode.gain);
   }
 }
 
@@ -102,12 +108,12 @@ class Webkey {
     this.keyCor = [
       {
         keys  : 'azsxcfvgbnjmk,l./:\\]'.split(''),
-        octave: 4,
+        octave: 3,
         head  : -1  // 'a' is code B#(A-)
       },
       {
         keys  : 'q2w3er5t6y7ui9o0p@^['.split(''),
-        octave: 5,
+        octave: 4,
         head  : 3  // 'q' is code C
       },
     ];
@@ -127,13 +133,13 @@ class Webkey {
         this.soundKey.setVolume(0.02, true);
         break;
       case 'ArrowRight':
-        this.soundKey.upOctave();
+        this.soundKey.setOctave(1, true);
         break;
       case 'ArrowDown':
         this.soundKey.setVolume(-0.02, true);
         break;
       case 'ArrowLeft':
-        this.soundKey.downOctave();
+        this.soundKey.setOctave(-1, true);
         break;
       default:
         this.soundKey.startSound(e.key);
