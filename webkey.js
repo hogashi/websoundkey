@@ -8,7 +8,11 @@ class SoundKey {
   constructor() {
     // create web audio api context
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    this.gainNode = this.audioCtx.createGain();
+    // this.gainNode.value = 100;
+    this.gainNode.connect(this.audioCtx.destination);
     this.state = {
+      volume: 100,
       octave: 4,
       frequencyMap: {},
     };
@@ -39,14 +43,14 @@ class SoundKey {
     // debugger;
     this.state.frequencyMap[key].oscillator.type = type;
     this.state.frequencyMap[key].oscillator.frequency.value = this.freq(key); // value in hertz
-    this.state.frequencyMap[key].oscillator.connect(this.audioCtx.destination);
+    this.state.frequencyMap[key].oscillator.connect(this.gainNode);
   }
 
   startSound(key) {
     if (key && !!this.state.frequencyMap[key] && this.state.frequencyMap[key].isReady) {
       // debugger;
       this.state.frequencyMap[key].isReady = false;
-      this._createOscillator(key, 'sine');
+      this._createOscillator(key);
       this.state.frequencyMap[key].oscillator.start();
       // text(`start:${this.state.frequencyMap[key].freq}`);
     }
@@ -73,6 +77,23 @@ class SoundKey {
     if (this.state.octave < 1) {
       this.state.octave = 1;
     }
+  }
+
+  setVolume(volume = 1, relative = false) {
+    if (relative) {
+      this.gainNode.gain.value += volume;
+    }
+    else {
+      this.gainNode.gain.value = volume;
+    }
+
+    if (this.gainNode.gain.value < 0) {
+      this.gainNode.gain.value = 0;
+    }
+    else if (this.gainNode.gain.value > 1) {
+      this.gainNode.gain.value = 1;
+    }
+    console.log(this.gainNode.gain)
   }
 }
 
@@ -103,10 +124,14 @@ class Webkey {
     console.log('down: ' + e.key);
     switch (e.key) {
       case 'ArrowUp':
+        this.soundKey.setVolume(0.02, true);
+        break;
       case 'ArrowRight':
         this.soundKey.upOctave();
         break;
       case 'ArrowDown':
+        this.soundKey.setVolume(-0.02, true);
+        break;
       case 'ArrowLeft':
         this.soundKey.downOctave();
         break;
