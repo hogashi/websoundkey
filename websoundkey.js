@@ -1,9 +1,11 @@
 // webkey.js
 
+// debug method
 const text = t => {
   document.body.insertAdjacentHTML('afterbegin', `<pre>${t}</pre>`)
 };
 
+// sound keyboard class which has audio context
 class SoundKey {
   constructor() {
     // create web audio api context
@@ -82,7 +84,6 @@ class SoundKey {
     else if (this.state.octave > 8) {
       this.state.octave = 8;
     }
-    console.log(this.state.octave);
   }
 
   setVolume(volume = 1, relative = false) {
@@ -99,11 +100,11 @@ class SoundKey {
     else if (this.gainNode.gain.value > 1) {
       this.gainNode.gain.value = 1;
     }
-    console.log(this.gainNode.gain);
   }
 }
 
-class Webkey {
+//
+class WebKey {
   constructor() {
     this.keyCor = [
       {
@@ -127,7 +128,7 @@ class Webkey {
   }
 
   _startSound(e) {
-    console.log('down: ' + e.key);
+    // console.log('down: ' + e.key);
     switch (e.key) {
       case 'ArrowUp':
         this.soundKey.setVolume(0.02, true);
@@ -148,9 +149,9 @@ class Webkey {
   }
 
   _stopSound(e) {
-    console.log('up: ' + e.key);
+    // console.log('up: ' + e.key);
     this.soundKey.stopSound(e.key);
   }
 }
 
-const webkey = new Webkey();
+const webKey = new WebKey();
