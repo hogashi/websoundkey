@@ -166,10 +166,10 @@ let alreadySet = false;
   'mousehover',
   'mouseover'
 ].forEach(e => {
-  if (!alreadySet) {
-    document.addEventListener(e, () => {
+  document.addEventListener(e, () => {
+    if (!alreadySet) {
       webKey = new WebKey();
-    });
-    alreadySet = true;
-  }
+      alreadySet = true;
+    }
+  });
 });
