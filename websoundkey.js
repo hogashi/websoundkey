@@ -62,7 +62,9 @@ class SoundKey {
     if (key && !!this.state.frequencyMap[key]) {
       // debugger;
       this.state.frequencyMap[key].isReady = true;
-      this.state.frequencyMap[key].oscillator.stop();
+      if (!!this.state.frequencyMap[key].oscillator) {
+        this.state.frequencyMap[key].oscillator.stop();
+      }
       // text(`stop: ${this.state.frequencyMap[key].freq}`);
     }
   }
