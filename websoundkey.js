@@ -154,4 +154,21 @@ class WebKey {
   }
 }
 
-const webKey = new WebKey();
+const alreadySet = false;
+[
+  'click',
+  'keydown',
+  'keyup',
+  'mousemove',
+  'mouseon',
+  'mouseout',
+  'mousehover',
+  'mouseover'
+].forEach(e => {
+  if (!alreadySet) {
+    document.addEventListener(e, () => {
+      webKey = new WebKey();
+    });
+    alreadySet = true;
+  }
+}
