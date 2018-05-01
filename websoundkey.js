@@ -154,7 +154,8 @@ class WebKey {
   }
 }
 
-const alreadySet = false;
+let webKey;
+let alreadySet = false;
 [
   'click',
   'keydown',
