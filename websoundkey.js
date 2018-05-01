@@ -171,4 +171,4 @@ const alreadySet = false;
     });
     alreadySet = true;
   }
-}
+});
